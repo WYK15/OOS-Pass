@@ -141,17 +141,15 @@ target_link_libraries(LEO_PASSES
   "$<$<PLATFORM_ID:Darwin>:-undefined dynamic_lookup>")
 ```
 
-
-
 也可以指定使用`STATIC`编译为静态库，静态Plugin会被链接入可执行文件中，如`opt`，这样使用`opt`运行pass时不用指定`-load-pass-plugin`
 
 详情参考[Dynamic vs Static Plugins](https://github.com/banach-space/llvm-tutor#dynamic-vs-static-plugins)
 
 
 
-## 合并到源码中
+## Merge到源码中
 
-开发完out of source pass后，若想集成到LLVM中，可以使用以下方式，参考自[官网介绍](https://llvm.org/docs/CMake.html#id19)
+开发完out of source pass后，若想Merge到到LLVM中，需要使用`add_llvm_library`函数，可以使用以下方式，参考自[官网介绍](https://llvm.org/docs/CMake.html#id19)
 
 1. 添加以下代码到<project dir>/CMakeLists.txt中
 
@@ -168,4 +166,11 @@ target_link_libraries(LEO_PASSES
    )
    ```
 
-   
+
+## 整合到源码中
+
+如果单纯想将out of source的pass项目整合到LLVM项目中，则通过以下方式：
+
+1. 拷贝<lib>目录到`<LLVM root>/lib/Transform` directory
+2. 添加 `add_subdirectory(<lib>)` 到 `<LLVM root>/lib/Transform/CMakeLists.txt`.
+3. 拷贝<include>到`<LLVM root>/include/llvm/Transform/`
